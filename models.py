@@ -1,5 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional, Dict
+import uuid
 
 class UserRegister(BaseModel):
     userName: str
@@ -38,3 +39,24 @@ class ErrorResponse(BaseModel):
 class LoginResponse(BaseModel):
     access_token: str
     token_type: str
+
+class MatchRequest(BaseModel):
+    gameId: str
+    expireDate: str  # Use str for date or adjust to use a specific date type
+    isActive: bool = False
+    isCancelled: bool = False
+
+class MatchResponse(BaseModel):
+    userId: str
+    gameId: str
+    matchRequestId: str
+    expireDate: str
+    isActive: bool
+    isCancelled: bool
+
+class MatchRequestWithLinks(MatchRequest):
+    links: Dict[str, Dict[str, str]]
+
+class MatchRequestResponse(BaseModel):
+    matchRequests: List[MatchRequestWithLinks]
+    links: PaginationLinks
