@@ -25,3 +25,6 @@ To set up and run the Iris microservice, follow these steps:
    ```bash
    uvicorn main:app --host 127.0.0.1 --port 8000 --reload
    ```
+
+5. **Access the API Documentation**:
+   Navigate to `http://127.0.0.1:8001/docs` in your web browser to view and interact with the API endpoints.
