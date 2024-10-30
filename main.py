@@ -100,13 +100,21 @@ async def match_requests(
     # Extract user information from the validation response
     user_info = response.json()
     user_id = user_info.get("user_id")
+
+    params = {
+        "page": page,
+        "page_size": page_size,
+        "userId": user_id
+    }
+    if gameId is not None:
+        params["gameId"] = gameId
     
     # Forward the request to the Match service if token is valid
     async with httpx.AsyncClient() as client:
         match_response = await client.get(
             f"{MATCH_SERVICE_URL}/match-requests",
             headers={"Authorization": f"Bearer {token}"},
-            params={"page": page, "page_size": page_size, "userId": user_id, "gameId": gameId}
+            params=params
         )
         if match_response.status_code == 200:
             return match_response.json()
