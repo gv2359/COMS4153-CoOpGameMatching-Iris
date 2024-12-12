@@ -29,4 +29,5 @@ async def logout(token: str = Depends(oauth2_scheme)):
         return message
 
     except ResponseException as err:
+        print(err)
         raise HTTPException(status_code=err.status_code, detail=err.message)

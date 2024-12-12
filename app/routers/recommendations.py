@@ -30,4 +30,5 @@ async def get_recommendations(num_recoms: int = 6, token: str = Depends(oauth2_s
         return recoms_response
 
     except ResponseException as e:
+        print(e)
         raise HTTPException(status_code=e.status_code, detail=e.message)

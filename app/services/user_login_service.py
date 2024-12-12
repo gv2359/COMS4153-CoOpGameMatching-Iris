@@ -29,9 +29,10 @@ class UserLoginService(BaseValidationService):
             async with httpx.AsyncClient() as client:
                 response = await client.post(f"{self.USER_VALIDATION_SERVICE_URL}/logout",headers={"Authorization": f"Bearer {token}"})
                 if response.status_code == 200:
-                    message_response = MessageResponse(messsage = "Successfully logged out")
+                    message_response = MessageResponse(message = "Successfully logged out")
                     return message_response
                 else:
                     raise ResponseException(status_code=response.status_code, message = response.json().get("detail", "Logout failed"))
         except Exception as e:
+            print(e)
             raise ResponseException(status_code=500, message=f"Service Error : {str(e)}")

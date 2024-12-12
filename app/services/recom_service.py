@@ -32,7 +32,7 @@ class RecomService(BaseValidationService):
                 return user_act_response
             raise ResponseException(status_code=response.status_code, message="Error adding user_activity")
 
-    @BaseValidationService.validate_token
+    # @BaseValidationService.validate_token
     async def get_recommendations(self, user_id, num_recoms) -> Recommendations:
         params = {
             "num_recoms": num_recoms

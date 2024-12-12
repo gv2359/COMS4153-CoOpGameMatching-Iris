@@ -10,7 +10,7 @@ class GamesService(BaseValidationService):
     def __init__(self):
         self.MATCH_SERVICE_URL = os.getenv("MATCH_SERVICE_URL", "http://localhost:8002")
 
-    @BaseValidationService.validate_token
+    # @BaseValidationService.validate_token
     async def get_game(self, user_id, game_id):
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{self.MATCH_SERVICE_URL}/games/{game_id}")
@@ -19,7 +19,7 @@ class GamesService(BaseValidationService):
                 return game_response
             raise ResponseException(status_code=response.status_code, message="Error fetching game")
 
-    @BaseValidationService.validate_token
+    # @BaseValidationService.validate_token
     async def get_games(self, user_id, page, page_size, title, game_id):
         async with httpx.AsyncClient() as client:
             response = await client.get(

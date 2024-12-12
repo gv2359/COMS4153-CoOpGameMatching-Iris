@@ -42,6 +42,7 @@ async def games(
         return games_response
 
     except ResponseException as e:
+        print(e)
         raise HTTPException(status_code=e.status_code, detail=e.message)
 
 

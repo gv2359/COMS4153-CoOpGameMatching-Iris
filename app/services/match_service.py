@@ -10,7 +10,7 @@ from framework.exceptions.response_exceptions import ResponseException
 class MatchService(BaseValidationService):
 
     def __init__(self):
-        self.MATCH_SERVICE_URL = os.getenv("MATCH_SERVICE_URL", "http://localhost:8002")
+        self.MATCH_SERVICE_URL = os.getenv("MATCH_SERVICE_URL", "http://localhost:8003")
 
     @BaseValidationService.validate_token
     async def get_match_request(self, user_id, match_id):
@@ -87,7 +87,8 @@ class MatchService(BaseValidationService):
             raise ResponseException(status_code=404, message="Match not found or not valid")
 
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{self.MATCH_SERVICE_URL}/match/status/{match_id}")
+            print("Getting match status")
+            response = await client.get(f"{self.MATCH_SERVICE_URL}/match/status/{match_id}")
 
             if response.status_code == 200:
                 match_status_model = MatchStatus(**response.json())
@@ -105,7 +106,7 @@ class MatchService(BaseValidationService):
 
     async def validate_match_request(self, match_request_id):
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"{self.MATCH_SERVICE_URL}/match_requests/{match_request_id}")
+            response = await client.get(f"{self.MATCH_SERVICE_URL}/match-requests/{match_request_id}")
             if response.status_code == 200:
                 return True
             return False

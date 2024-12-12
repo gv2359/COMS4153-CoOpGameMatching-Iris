@@ -20,6 +20,7 @@ async def match_requests(match_request_id: str, token: str = Depends(oauth2_sche
         match_response = await match_service.get_match_request(token, match_request_id)
         return match_response
     except ResponseException as e:
+        print(e)
         raise HTTPException(status_code=e.status_code, detail=e.message)
 
 @router.get("/match-requests", response_model=MatchResponses,
@@ -35,6 +36,7 @@ async def match_requests(
         match_responses = await match_service.get_match_requests(token, page, page_size, game_id)
         return match_responses
     except ResponseException as e:
+        print(e)
         raise HTTPException(status_code=e.status_code, detail=e.message)
 
 @router.post("/match-requests", response_model=MatchResponse,
