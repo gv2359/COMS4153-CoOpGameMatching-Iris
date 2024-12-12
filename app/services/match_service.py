@@ -47,7 +47,7 @@ class MatchService(BaseValidationService):
 
         game_id = match_request_data["gameId"]
 
-        is_game = self.validate_game(game_id)
+        is_game = await self.validate_game(game_id)
         if not is_game:
             raise ResponseException(status_code=404, message="Game not found")
 
@@ -82,7 +82,7 @@ class MatchService(BaseValidationService):
     @BaseValidationService.validate_token
     async def get_match_status(self, user_id, match_id):
 
-        is_valid_match = self.validate_match_request(match_id)
+        is_valid_match = await self.validate_match_request(match_id)
         if not is_valid_match:
             raise ResponseException(status_code=404, message="Match not found or not valid")
 

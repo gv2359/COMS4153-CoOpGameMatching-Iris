@@ -23,7 +23,7 @@ async def mark_activity(user_activity_request: UserActivityRequest, token: str =
 
 @router.get("/recommendations", response_model=Recommendations,
          responses={401: {"model": ErrorResponse}, 500: {"model": ErrorResponse}})
-async def get_recommendations(num_recoms: int = 5, token: str = Depends(oauth2_scheme)):
+async def get_recommendations(num_recoms: int = 6, token: str = Depends(oauth2_scheme)):
     try:
         recom_service = RecomService()
         recoms_response = await recom_service.get_recommendations(token, num_recoms)

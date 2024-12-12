@@ -35,12 +35,10 @@ class RecomService(BaseValidationService):
     @BaseValidationService.validate_token
     async def get_recommendations(self, user_id, num_recoms) -> Recommendations:
         params = {
-            "num_recoms": num_recoms,
-            "user_id": user_id
+            "num_recoms": num_recoms
         }
-        print(user_id)
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{self.RECOM_SERVICE_URL}/recommendations/{user_id}", params=params)
+            response = await client.get(f"{self.RECOM_SERVICE_URL}/recommendations/{user_id}", params=params)
             if response.status_code == 200:
                 recom_response = Recommendations(**response.json())
                 return recom_response
