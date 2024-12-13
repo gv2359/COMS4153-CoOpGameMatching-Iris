@@ -20,7 +20,7 @@ async def games(game_id: Optional[str] = None,
                 token: str = Depends(oauth2_scheme)):
     try:
         games_service = GamesService()
-        games_response = await games_service.get_games(token, game_id)
+        games_response = await games_service.get_game(token, game_id)
         return games_response
 
     except ResponseException as e:
@@ -34,11 +34,12 @@ async def games(
         page_size: int = 10,
         title: Optional[str] = None,
         game_id: Optional[str] = None,
+        genre : Optional[str] = None,
         token: str = Depends(oauth2_scheme)
 ):
     try:
         games_service = GamesService()
-        games_response = await games_service.get_games(token, page, page_size, title, game_id)
+        games_response = await games_service.get_games(token, page, page_size, title, game_id, genre)
         return games_response
 
     except ResponseException as e:

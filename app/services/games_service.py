@@ -20,11 +20,11 @@ class GamesService(BaseValidationService):
             raise ResponseException(status_code=response.status_code, message="Error fetching game")
 
     # @BaseValidationService.validate_token
-    async def get_games(self, user_id, page, page_size, title, game_id):
+    async def get_games(self, user_id, page, page_size, title, game_id, genre):
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 f"{self.MATCH_SERVICE_URL}/games",
-                params={"page": page, "page_size": page_size, "title": title, "gameId": game_id}
+                params={"page": page, "page_size": page_size, "title": title, "game_id": game_id, "genre": genre},
             )
             if response.status_code == 200:
                 games_response = GamesResponse(**response.json())

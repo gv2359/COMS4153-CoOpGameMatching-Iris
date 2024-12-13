@@ -1,6 +1,5 @@
 import os
 import httpx
-
 from app.models.match import MatchResponses, MatchRequest, MatchResponse, MatchInitiate, MatchStatus
 from app.models.match import MatchResponseWithLinks, MatchInitiateResponse
 from app.services.base_validation_service import BaseValidationService
@@ -63,15 +62,15 @@ class MatchService(BaseValidationService):
 
     @BaseValidationService.validate_token
     async def initiate_match(self, user_id, match_initiate: MatchInitiate):
-
-        match_id = match_initiate["MatchRequestId"]
-        is_valid_match = self.validate_match_request(match_id)
+        match_initiate_data = match_initiate.dict()
+        match_id = match_initiate_data["MatchRequestId"]
+        is_valid_match = await self.validate_match_request(match_id)
 
         if not is_valid_match:
             raise ResponseException(status_code=404, message="Match not found or not valid")
 
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{self.MATCH_SERVICE_URL}/match-requests/match", json=match_initiate)
+            response = await client.post(f"{self.MATCH_SERVICE_URL}/match-requests/match", json=match_initiate_data)
 
             if response.status_code == 202:
                 response_model = MatchInitiateResponse(**response.json())

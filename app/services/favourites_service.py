@@ -13,17 +13,16 @@ class FavouritesService(BaseValidationService):
 
     @BaseValidationService.validate_token
     async def add_favourite(self, user_id, favourite_request:FavouriteRequest) -> FavouriteResponse:
-
-        game_id = favourite_request["gameId"]
-        is_valid_game = self.validate_game(game_id)
+        favourite_request_data = favourite_request.dict()
+        game_id = favourite_request_data["gameId"]
+        is_valid_game = await self.validate_game(game_id)
         if not is_valid_game:
             raise ResponseException(status_code=404, message="Game not found")
 
-        favourite_request["userId"] = user_id
-
+        favourite_request_data["userId"] = user_id
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{self.MATCH_SERVICE_URL}/favourite", json=favourite_request)
-            if response.status_code == 200:
+            response = await client.post(f"{self.MATCH_SERVICE_URL}/favourite", json=favourite_request_data)
+            if response.status_code == 201:
                 fav_response = FavouriteResponse(**response.json())
                 return fav_response
             raise ResponseException(status_code=response.status_code, message="Error adding favourite game")
